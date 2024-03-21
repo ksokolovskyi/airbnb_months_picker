@@ -1,0 +1,23 @@
+name: airbnb_months_picker
+description: "Airbnb Months Picker"
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  tactile_feedback:
+    git: https://github.com/ksokolovskyi/tactile_feedback
+
+dev_dependencies:
+  very_good_analysis: 5.1.0
+
+flutter:
+  fonts:
+  - family: Figtree
+    fonts:
+      - asset: assets/fonts/Figtree-Bold.ttf
+        weight: 700
