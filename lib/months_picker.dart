@@ -1,4 +1,4 @@
-// ignore_for_file: cascade_invocations
+// ignore_for_file: cascade_invocations, document_ignores
 
 import 'dart:math' as math;
 import 'dart:ui';
@@ -17,13 +17,13 @@ const _maxDiameter = 350.0;
 const _ticksCount = 12;
 
 /// The max allowed angle (represents value 12).
-const _maxAngle = math.pi * 1.9999;
+const double _maxAngle = math.pi * 1.9999;
 
 /// The min allowed angle (represents value 1).
-const _minAngle = _maxAngle / _ticksCount;
+const double _minAngle = _maxAngle / _ticksCount;
 
 /// The angle between two ticks.
-const _tickAngle = _minAngle;
+const double _tickAngle = _minAngle;
 
 /// The duration needed to traverse one radian.
 const _radianAnimationDuration = 30;
@@ -33,18 +33,18 @@ const _minAnimationDuration = 150;
 
 // The factors to scale the pickers's diameter to determine the sizes of it's
 // parts.
-const _trackPaddingFactor = 3.5 / 290;
-const _trackWidthFactor = 60 / 290 - 2 * _trackPaddingFactor;
-const _trackCornerRadiusFactor = 3 / 290;
+const double _trackPaddingFactor = 3.5 / 290;
+const double _trackWidthFactor = 60 / 290 - 2 * _trackPaddingFactor;
+const double _trackCornerRadiusFactor = 3 / 290;
 
-const _thumbPaddingFactor = 4.5 / 290;
-const _thumbDiameterFactor = _trackWidthFactor - _thumbPaddingFactor * 2;
-const _thumbFocusedBorderWidth = 2 / 44;
+const double _thumbPaddingFactor = 4.5 / 290;
+const double _thumbDiameterFactor = _trackWidthFactor - _thumbPaddingFactor * 2;
+const double _thumbFocusedBorderWidth = 2 / 44;
 
-const _tickDiameterFactor = 4 / 290;
+const double _tickDiameterFactor = 4 / 290;
 
-const _valueFontSizeFactor = 96 / 290;
-const _labelFontSizeFactor = 18 / 290;
+const double _valueFontSizeFactor = 96 / 290;
+const double _labelFontSizeFactor = 18 / 290;
 
 /// The diameter of the picker in the Figma design.
 const _designPickerDiameter = 450.0;
@@ -63,9 +63,9 @@ class MonthsPicker extends StatefulWidget {
     required this.onChanged,
     super.key,
   }) : assert(
-          value >= 1 && value <= _ticksCount,
-          'value have to be in range [1, $_ticksCount]',
-        );
+         value >= 1 && value <= _ticksCount,
+         'value have to be in range [1, $_ticksCount]',
+       );
 
   /// The currently selected value (number of months).
   final int value;
@@ -111,9 +111,10 @@ class _MonthsPickerState extends State<MonthsPicker>
     duration: const Duration(milliseconds: 125),
   );
 
-  late final _thumbScaleAnimation = Tween<double>(begin: 1, end: 1.04)
-      .chain(CurveTween(curve: Curves.easeInOut))
-      .animate(_thumbScaleController);
+  late final Animation<double> _thumbScaleAnimation = Tween<double>(
+    begin: 1,
+    end: 1.04,
+  ).chain(CurveTween(curve: Curves.easeInOut)).animate(_thumbScaleController);
 
   // Action mapping for a focused picker.
   late final _actionMap = <Type, Action<Intent>>{
@@ -134,8 +135,7 @@ class _MonthsPickerState extends State<MonthsPicker>
     final newValue = switch (intent.type) {
       _ValueAdjustmentType.decrement => widget.value - 1,
       _ValueAdjustmentType.increment => widget.value + 1,
-    }
-        .clamp(1, _ticksCount);
+    }.clamp(1, _ticksCount);
 
     if (newValue == widget.value) {
       return;
@@ -161,7 +161,7 @@ class _MonthsPickerState extends State<MonthsPicker>
   Widget build(BuildContext context) {
     final shortcutMap = switch (MediaQuery.navigationModeOf(context)) {
       NavigationMode.directional => _directionalNavShortcutMap,
-      NavigationMode.traditional => _traditionalNavShortcutMap
+      NavigationMode.traditional => _traditionalNavShortcutMap,
     };
 
     return Semantics(
@@ -195,10 +195,10 @@ class _MonthsPickerState extends State<MonthsPicker>
 
 class _ValueAdjustmentIntent extends Intent {
   const _ValueAdjustmentIntent.increment()
-      : type = _ValueAdjustmentType.increment;
+    : type = _ValueAdjustmentType.increment;
 
   const _ValueAdjustmentIntent.decrement()
-      : type = _ValueAdjustmentType.decrement;
+    : type = _ValueAdjustmentType.decrement;
 
   final _ValueAdjustmentType type;
 }
@@ -212,8 +212,8 @@ class _Background extends SingleChildRenderObjectWidget {
   const _Background({
     required this.value,
   }) : super(
-          child: const _BackgroundBox(),
-        );
+         child: const _BackgroundBox(),
+       );
 
   final int value;
 
@@ -252,8 +252,8 @@ class _BackgroundBox extends StatelessWidget {
 class _RenderBackground extends RenderMouseRegion {
   _RenderBackground({
     required int value,
-  })  : _value = value,
-        _focusedValue = _stubFocusedValue;
+  }) : _value = value,
+       _focusedValue = _stubFocusedValue;
 
   static const _stubFocusedValue = -1;
 
@@ -411,8 +411,10 @@ class _RenderBackground extends RenderMouseRegion {
         height: _tickDiameterFactor * outerCircleDiameter,
       );
 
-      final translation =
-          Offset(outerCircleDiameter / 2, outerCircleDiameter / 2);
+      final translation = Offset(
+        outerCircleDiameter / 2,
+        outerCircleDiameter / 2,
+      );
 
       for (var i = 1; i <= _ticksCount; i++) {
         canvas
@@ -470,8 +472,8 @@ class _RenderThumb extends RenderMouseRegion {
   _RenderThumb({
     required Animation<double> scaleAnimation,
     required bool isFocused,
-  })  : _scaleAnimation = scaleAnimation,
-        _isFocused = isFocused;
+  }) : _scaleAnimation = scaleAnimation,
+       _isFocused = isFocused;
 
   Animation<double> get scaleAnimation => _scaleAnimation;
   Animation<double> _scaleAnimation;
@@ -722,15 +724,15 @@ class _RenderMonthsPicker extends RenderShiftedBox
     required DeviceGestureSettings gestureSettings,
     required VoidCallback onDragStart,
     required VoidCallback onDragEnd,
-  })  : _value = value,
-        _label = label,
-        _textDirection = textDirection,
-        _onChanged = onChanged,
-        _vsync = vsync,
-        _onDragStart = onDragStart,
-        _onDragEnd = onDragEnd,
-        _cursor = SystemMouseCursors.click,
-        super(null) {
+  }) : _value = value,
+       _label = label,
+       _textDirection = textDirection,
+       _onChanged = onChanged,
+       _vsync = vsync,
+       _onDragStart = onDragStart,
+       _onDragEnd = onDragEnd,
+       _cursor = SystemMouseCursors.click,
+       super(null) {
     _angleController = AnimationController(
       vsync: vsync,
       lowerBound: _minAngle,
@@ -1052,7 +1054,7 @@ class _RenderMonthsPicker extends RenderShiftedBox
     } else {
       final milliseconds =
           (_angle - newAngle).abs() * _radianAnimationDuration +
-              _minAnimationDuration;
+          _minAnimationDuration;
 
       _angleController
           .animateTo(
@@ -1072,7 +1074,8 @@ class _RenderMonthsPicker extends RenderShiftedBox
   }
 
   bool _shouldUpdateAngle(double newAngle) {
-    final diff = _MonthsPickerConverter.convertAngleToDoubleValue(_angle) -
+    final diff =
+        _MonthsPickerConverter.convertAngleToDoubleValue(_angle) -
         _MonthsPickerConverter.convertAngleToDoubleValue(newAngle);
     return diff.abs() <= 1;
   }
@@ -1148,9 +1151,11 @@ class _RenderMonthsPicker extends RenderShiftedBox
 
     final correctionAngle = math.atan(cornerRadius / outerTrackCircleRadius);
 
-    final innerThumbX = innerTrackCircleRadius * math.cos(startAngle + _angle) +
+    final innerThumbX =
+        innerTrackCircleRadius * math.cos(startAngle + _angle) +
         outerCircleRadius;
-    final innerThumbY = innerTrackCircleRadius * math.sin(startAngle + _angle) +
+    final innerThumbY =
+        innerTrackCircleRadius * math.sin(startAngle + _angle) +
         outerCircleRadius;
 
     final topCornerRect = Rect.fromCenter(
@@ -1205,9 +1210,11 @@ class _RenderMonthsPicker extends RenderShiftedBox
       ..drawPathShadow(path, shadow1)
       ..drawPathShadow(path, shadow2);
 
-    final thumbCenterX = (innerTrackCircleRadius + trackWidth / 2) *
+    final thumbCenterX =
+        (innerTrackCircleRadius + trackWidth / 2) *
         math.cos(startAngle + _angle);
-    final thumbCenterY = (innerTrackCircleRadius + trackWidth / 2) *
+    final thumbCenterY =
+        (innerTrackCircleRadius + trackWidth / 2) *
         math.sin(startAngle + _angle);
 
     _thumbPosition = Offset(thumbCenterX, thumbCenterY).translate(
